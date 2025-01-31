@@ -1,0 +1,4 @@
+pysat
+networkx
+pandas
+python-sat==0.1.7.dev26
