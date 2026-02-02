@@ -1,6 +1,9 @@
-# On the Expressive Power of GNNs for SAT
+# On the Expressive Power of GNNs for Boolean Satisfiability
 
-This repository provides code for running the Weisfeiler-Leman (WL) algorithm on SAT instances. It identifies the smallest iteration where satisfiable formulas remain satisfiable when WL-equivalent literals are constrained to the same value.
+This repository contains code for the experiments in [On the Expressive Power of GNNs for Boolean Satisfiability](https://openreview.net/forum?id=Q01JX3CuDx) (ICLR26).
+
+The experiments evaluate whether Weisfeiler–Leman (WL)-powerful GNN architectures can, in principle, predict satisfying assignments for SAT formulas. The core test is: run WL for $r$ rounds on the literal–clause graph of a **satisfiable** formula, and constrain all WL-equivalent literals to take the same Boolean value. Then, check whether the augmented formula remains satisfiable. We compute the smallest such $r$ (when it exists) and conclude that a WL-powerful model can only succeed within $r$ rounds if these constraints preserve satisfiability. Experiments are run on hard random instances from G4SAT (e.g., near-threshold 3-SAT) and on industrial benchmarks from SAT competitions (2020–2025).
+
 
 ## Setup
 
