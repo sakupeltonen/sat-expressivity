@@ -3,7 +3,8 @@ from pysat.solvers import Cadical
 import os
 
 from g4satbench.utils.utils import parse_cnf_file
-from formulas import construct_networkx_VCG, augment_cnf
+from formulas import construct_networkx_LCG, augment_cnf
+
 
 
 def run_WL(G, n_iter):
@@ -11,7 +12,7 @@ def run_WL(G, n_iter):
     all_hashes = nx.weisfeiler_lehman_subgraph_hashes(G, 
                                                   iterations=n_iter-1, 
                                                   node_attr="type", 
-                                                  edge_attr="sign")
+                                                  edge_attr="edge_type")
     
     # add hashes for the first iteration manually
     for node, attr in G.nodes(data=True):
@@ -25,7 +26,7 @@ def get_partitions(hashes, only_variables=True):
     hash_to_subset = {}
 
     for node, hash in hashes.items():
-        if node[0] != 'v' and only_variables:
+        if node[0] != 'l' and only_variables:
             continue
         if hash in hash_to_subset:
             hash_to_subset[hash].append(node)
@@ -55,9 +56,9 @@ def iter_converged(all_hashes):
 
 
 
-def find_critical_iter(file_path, n_iter, out_path='constrained.cnf'):
-    n_vars, clauses, learned_clauses = parse_cnf_file(file_path, split_clauses=True)
-    G, _ = construct_networkx_VCG(n_vars, clauses, learned_clauses)  # NOTE: ignoring the second graph for now
+def find_critical_iter(file_path, n_iter):
+    n_vars, clauses, _ = parse_cnf_file(file_path, split_clauses=True)
+    G = construct_networkx_LCG(n_vars, clauses)
 
     # Step 2: Find WL partitions
     all_hashes = run_WL(G, n_iter)
